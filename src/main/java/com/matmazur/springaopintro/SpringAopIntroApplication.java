@@ -23,13 +23,9 @@ public class SpringAopIntroApplication {
 
     public static void main(String[] args) {
 
-
         ConfigurableApplicationContext context = SpringApplication.run(SpringAopIntroApplication.class, args);
 
-//        GenericRepository<Long, Person> repo = context.getBean(GenericRepository.class);
-
         PersonRepository repo = context.getBean(PersonRepository.class);
-
 
         Person p1 = new Person("Mike", "Czekolao", 1L);
         Person p2 = new Person("Angela", "Czekolao", 2L);
@@ -38,12 +34,9 @@ public class SpringAopIntroApplication {
         System.out.println("\n\nP2 VALIDATION");
         validation(p2, repo);
 
-
-//        repo.add(null);
         System.out.println("\n\n");
         repo.getById(1L);
         repo.getById(null);
-
     }
 
     private static void validation(Person somePerson, GenericRepository<Long, Person> repo) {
@@ -57,7 +50,6 @@ public class SpringAopIntroApplication {
             System.out.println(violation.getMessage());
             boo = false;
         }
-
         if (boo) {
             repo.add(somePerson);
         }

@@ -18,7 +18,7 @@ import java.util.Random;
 @Component
 public class LoggerAspect {
 
-    @Around("within(com.matmazur.springaopintro.repository.*)")
+    @Around("com.matmazur.springaopintro.aspects.AspectUtil.allBookRepoMethods())")
     public Object execTimemeasure(ProceedingJoinPoint pjp) {
 
         Instant before = Instant.now();
@@ -26,14 +26,11 @@ public class LoggerAspect {
         System.out.printf("LOG before %s with args %s\n", pjp.getSignature(), Arrays.toString(args));
 
         try {
-
             Thread.sleep(new Random().nextInt(4000));
-
 
             Object result = pjp.proceed();
             System.out.println("LOG - AFTER");
             return result;
-
 
         } catch (Throwable throwable) {
             System.out.println("LOG - AFTER THROWING");
@@ -42,14 +39,12 @@ public class LoggerAspect {
         } finally {
             System.out.println("LOG - AFTER RETURNING");
 
-
             Instant after = Instant.now();
             Duration execTime = Duration.between(before, after);
             System.out.printf("%s execution took %d ms\n", pjp.toShortString(), execTime.toMillis());
         }
         return null;
     }
-
 
     @AfterReturning(pointcut = "execution(* com.matmazur.springaopintro.repository.PersonRepository.getById(..)) && args(id)", returning = "result")
     public void logSuccess(JoinPoint point, Long id, Person result) {
@@ -58,12 +53,10 @@ public class LoggerAspect {
         System.out.println(result.getName());
     }
 
+    @AfterThrowing(pointcut = "execution(* com.matmazur.springaopintro.repository.PersonRepository.getById(..))", throwing = "error")
+    public void logError(JoinPoint point, Exception error) {
 
-    @AfterThrowing(pointcut = "execution(* com.matmazur.springaopintro.repository.PersonRepository.getById(..))",throwing = "error")
-    public void logError(JoinPoint point,Exception error){
-
-        System.out.printf("Method %s finished with an exception %s",point.getSignature(),error.getMessage());
+        System.out.printf("Method %s finished with an exception %s", point.getSignature(), error.getMessage());
 
     }
-
 }
