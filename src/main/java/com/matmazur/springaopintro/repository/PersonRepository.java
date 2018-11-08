@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class PersonRepository implements GenericRepository<Integer, Person> {
+public class PersonRepository implements GenericRepository<Long, Person> {
 
     private List<Person> personList;
 
@@ -16,7 +16,7 @@ public class PersonRepository implements GenericRepository<Integer, Person> {
     }
 
     @Override
-    public Person getById(Integer id) {
+    public Person getById(Long id) {
 
         return personList.stream().filter(p -> id.equals(p.getId())).findAny().get();
     }

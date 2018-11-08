@@ -1,13 +1,20 @@
 package com.matmazur.springaopintro.model;
 
-public class Person {
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;public class Person {
 
+    @NotNull
+    @Min(2)
     private String name;
+    @NotNull
+    @Min(2)
     private String surname;
-    private int id;
+    @NotNull
+    @Min(0)
+    private Long id;
 
 
-    public Person(String name, String surname, int id) {
+    public Person(String name, String surname, Long id) {
         this.name = name;
         this.surname = surname;
         this.id = id;
@@ -41,11 +48,11 @@ public class Person {
         this.surname = surname;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }
