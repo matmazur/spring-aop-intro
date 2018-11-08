@@ -1,33 +1,69 @@
 package com.matmazur.springaopintro.aspects;
 
-import org.aspectj.lang.annotation.*;
+import com.matmazur.springaopintro.model.Person;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Random;
 
 @Aspect
 @Component
 public class LoggerAspect {
 
-//    @Before("execution(* com.matmazur.springaopintro.repository.PersonRepository.*(..))")
-//    public void logInfoBefore(){
-//        System.out.println("Logged before");
-//    }
-//
-//
-//    @After("execution(* com.matmazur.springaopintro.repository.PersonRepository.*(..))")
-//    public void logInfoAfter(){
-//        System.out.println("Logged after");
-//    }
-//
-//
-//
-//    @AfterThrowing("within(com.matmazur.springaopintro.repository.*)")
-//    public void logError(){
-//        System.out.println("Method thrown an exception");
-//    }
-//
-//
-//    @AfterReturning("within(com.matmazur.springaopintro.repository.*)")
-//    public void logSuccess(){
-//        System.out.println("Method finished with a success");
-//    }
+    @Around("within(com.matmazur.springaopintro.repository.*)")
+    public Object execTimemeasure(ProceedingJoinPoint pjp) {
+
+        Instant before = Instant.now();
+        Object[] args = pjp.getArgs();
+        System.out.printf("LOG before %s with args %s\n", pjp.getSignature(), Arrays.toString(args));
+
+        try {
+
+            Thread.sleep(new Random().nextInt(4000));
+
+
+            Object result = pjp.proceed();
+            System.out.println("LOG - AFTER");
+            return result;
+
+
+        } catch (Throwable throwable) {
+            System.out.println("LOG - AFTER THROWING");
+            throwable.printStackTrace();
+
+        } finally {
+            System.out.println("LOG - AFTER RETURNING");
+
+
+            Instant after = Instant.now();
+            Duration execTime = Duration.between(before, after);
+            System.out.printf("%s execution took %d ms\n", pjp.toShortString(), execTime.toMillis());
+        }
+        return null;
+    }
+
+
+    @AfterReturning(pointcut = "execution(* com.matmazur.springaopintro.repository.PersonRepository.getById(..)) && args(id)", returning = "result")
+    public void logSuccess(JoinPoint point, Long id, Person result) {
+        System.out.printf("Method get() successfully returned value %s for isbn %s\n", result, id);
+
+        System.out.println(result.getName());
+    }
+
+
+    @AfterThrowing(pointcut = "execution(* com.matmazur.springaopintro.repository.PersonRepository.getById(..))",throwing = "error")
+    public void logError(JoinPoint point,Exception error){
+
+        System.out.printf("Method %s finished with an exception %s",point.getSignature(),error.getMessage());
+
+    }
+
 }

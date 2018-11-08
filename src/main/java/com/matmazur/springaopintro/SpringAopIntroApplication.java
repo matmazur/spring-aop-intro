@@ -33,19 +33,16 @@ public class SpringAopIntroApplication {
 
         Person p1 = new Person("Mike", "Czekolao", 1L);
         Person p2 = new Person("Angela", "Czekolao", 2L);
-        Person p3 = new Person("Stevenson", "Czekolao", 3L);
         System.out.println("P1 VALIDATION");
         validation(p1, repo);
         System.out.println("\n\nP2 VALIDATION");
         validation(p2, repo);
-        System.out.println("\n\nP3 VALIDATION");
-        validation(p3, repo);
+
 
 //        repo.add(null);
         System.out.println("\n\n");
         repo.getById(1L);
-        repo.getById(2L);
-        repo.getById(3L);
+        repo.getById(null);
 
     }
 
