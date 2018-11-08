@@ -43,9 +43,9 @@ public class SpringAopIntroApplication {
 
 //        repo.add(null);
         System.out.println("\n\n");
-        System.out.println(repo.getById(1L));
-        System.out.println(repo.getById(2L));
-        System.out.println(repo.getById(3L));
+        repo.getById(1L);
+        repo.getById(2L);
+        repo.getById(3L);
 
     }
 
