@@ -31,22 +31,21 @@ public class SpringAopIntroApplication {
         PersonRepository repo = context.getBean(PersonRepository.class);
 
 
-        Person p1 = new Person("Mike", "Czekolao", -1L);
+        Person p1 = new Person("Mike", "Czekolao", 1L);
         Person p2 = new Person("Angela", "Czekolao", 2L);
         Person p3 = new Person("Stevenson", "Czekolao", 3L);
         System.out.println("P1 VALIDATION");
         validation(p1, repo);
-        System.out.println("P2 VALIDATION");
+        System.out.println("\n\nP2 VALIDATION");
         validation(p2, repo);
-        System.out.println("P3 VALIDATION");
+        System.out.println("\n\nP3 VALIDATION");
         validation(p3, repo);
 
 //        repo.add(null);
-
+        System.out.println("\n\n");
+        System.out.println(repo.getById(1L));
         System.out.println(repo.getById(2L));
-
         System.out.println(repo.getById(3L));
-        System.out.println(repo.getById(-1L));
 
     }
 
