@@ -18,7 +18,11 @@ public class PersonRepository implements GenericRepository<Long, Person> {
     @Override
     public Person getById(Long id) {
 
-        return personList.stream().filter(p -> id.equals(p.getId())).findAny().get();
+
+        Person is = personList.stream().filter(p -> p.getId().equals(id)).findAny().orElseThrow(() -> new RuntimeException("ggaa"));
+
+
+        return is;
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 @SpringBootApplication
 public class SpringAopIntroApplication {
 
@@ -24,7 +26,9 @@ public class SpringAopIntroApplication {
 
         ConfigurableApplicationContext context = SpringApplication.run(SpringAopIntroApplication.class, args);
 
-        GenericRepository<Long, Person> repo = context.getBean(PersonRepository.class);
+//        GenericRepository<Long, Person> repo = context.getBean(GenericRepository.class);
+
+        PersonRepository repo = context.getBean(PersonRepository.class);
 
 
         Person p1 = new Person("Mike", "Czekolao", -1L);
@@ -37,11 +41,12 @@ public class SpringAopIntroApplication {
         System.out.println("P3 VALIDATION");
         validation(p3, repo);
 
+//        repo.add(null);
 
-//        System.out.println(repo.getById(-1L));
         System.out.println(repo.getById(2L));
 
         System.out.println(repo.getById(3L));
+        System.out.println(repo.getById(-1L));
 
     }
 
