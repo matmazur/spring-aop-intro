@@ -1,16 +1,19 @@
 package com.matmazur.springaopintro.model;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;public class Person {
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-    @NotNull
-    @Min(2)
+public class Person {
+
+    @NotNull(message = "name cannot be null")
+    @Size(min = 2)
     private String name;
-    @NotNull
-    @Min(2)
+    @NotNull(message = "surname cannot be null")
+    @Size(min = 2)
     private String surname;
-    @NotNull
-    @Min(0)
+    @NotNull(message = "id cannot be null")
+    @Min(value = 0L)
     private Long id;
 
 
